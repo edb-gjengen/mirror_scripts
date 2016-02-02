@@ -13,6 +13,7 @@ warn() {
 # https://launchpad.net/ubuntu/+archivemirrors
 # rsync://<iso-country-code>.rsync.archive.ubuntu.com/ubuntu should always work
 RSYNCSOURCE=rsync://no.archive.ubuntu.com/ubuntu/
+#RSYNCSOURCE=rsync://ubuntu.uib.no/ubuntu-archive/
 #RSYNCSOURCE=rsync://ftp.uninett.no/ubuntu/
 
 # Define where you want the mirror-data to be on your mirror
@@ -27,10 +28,12 @@ rsync -4 --verbose --recursive --times --links --hard-links \
   --stats --chmod=a+rx \
   --exclude "Packages*" --exclude "Sources*" \
   --exclude "Release*" \
-  ${RSYNCSOURCE} ${BASEDIR} || fatal "First stage of sync failed."
+  ${RSYNCSOURCE} ${BASEDIR} &>> /opt/scripts/ubuntu_archive_two_stage.log || fatal "First stage of sync failed."
 
 rsync -4 --verbose --recursive --times --links --hard-links \
   --stats --delete --chmod=a+rx --delete-after \
-  ${RSYNCSOURCE} ${BASEDIR} || fatal "Second stage of sync failed."
+  ${RSYNCSOURCE} ${BASEDIR} &>> /opt/scripts/ubuntu_archive_two_stage.log || fatal "Second stage of sync failed."
 
 date -u > ${BASEDIR}/project/trace/$(hostname -f)
+
+date &>> /opt/scripts/ubuntu_archive_two_stage.log
