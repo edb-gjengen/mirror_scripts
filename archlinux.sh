@@ -1,4 +1,10 @@
 #/bin/bash
+
+fatal() {
+    echo "$1"
+    exit 1
+}
+
 #RSYNCSOURCE=rsync://ftp5.gwdg.de/pub/linux/archlinux/
 #RSYNCSOURCE=rsync://mirror.nl.leaseweb.net/archlinux/
 RSYNCSOURCE=rsync://mirror.one.com/archlinux/
@@ -9,7 +15,7 @@ BASEDIR=/store/mirror/archlinux
 
 rsync --verbose --recursive --times --links --hard-links \
   --stats --delete-after --ignore-errors \
-  ${RSYNCSOURCE} ${BASEDIR} &>> /opt/scripts/archlinux.log || echo "Failed to rsync from ${RSYNCSOURCE}."
+  ${RSYNCSOURCE} ${BASEDIR} &>> /opt/scripts/archlinux.log || fatal "Failed to rsync from ${RSYNCSOURCE}."
 
 date &>> /opt/scripts/archlinux.log
 echo "############################" &>> /opt/scripts/archlinux.log
