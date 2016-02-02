@@ -31,3 +31,4 @@ rsync --verbose --recursive --times --links --hard-links \
 date -u > ${BASEDIR}/.trace/$(hostname -f)
 
 date &>> /opt/scripts/ubuntu_releases.log
+echo "############################" &>> /opt/scripts/ubuntu_releases.log

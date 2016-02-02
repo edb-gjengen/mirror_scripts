@@ -12,3 +12,5 @@ rsync --verbose --recursive --times --links --hard-links \
   ${RSYNCSOURCE} ${BASEDIR} &>> /opt/scripts/archlinux.log || echo "Failed to rsync from ${RSYNCSOURCE}."
 
 date &>> /opt/scripts/archlinux.log
+echo "############################" &>> /opt/scripts/archlinux.log
+

@@ -37,3 +37,4 @@ rsync -4 --verbose --recursive --times --links --hard-links \
 date -u > ${BASEDIR}/project/trace/$(hostname -f)
 
 date &>> /opt/scripts/ubuntu_archive_two_stage.log
+echo "############################" &>> /opt/scripts/ubuntu_archive_two_stage.log
