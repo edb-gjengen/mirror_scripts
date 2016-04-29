@@ -20,22 +20,24 @@ lastupdate_url="http://rsync.archlinux.org/lastupdate"
 exec 9>"${lock}"
 flock -n 9 || exit
 
-# if we are called without a tty (cronjob) only run when there are changes
-if ! tty -s && diff -b <(curl -s "$lastupdate_url") "$target/lastupdate" >/dev/null; then
-	echo "Sync was not needed, exiting. $(date)" >> /opt/scripts/archlinux.log
-	exit 0
-fi
+# only run rsync when there are changes
+if diff -b <(curl -s "$lastupdate_url") "$target/lastupdate" >/dev/null; then
+	date +%s > $target/lastsync
+	echo "Sync was not needed" >> /opt/scripts/archlinux.log
 
-if ! stty &>/dev/null; then
-    QUIET="-q"
-fi
+else
+	if ! stty &>/dev/null; then
+		QUIET="-q"
+	fi
 
-rsync -rtlvH --safe-links --delete-after --progress -h ${QUIET} --timeout=600 --contimeout=60 -p \
-	--delay-updates --no-motd --bwlimit=$bwlimit \
-	--temp-dir="${tmp}" \
-	--exclude='*.links.tar.gz*' \
-	${source} \
-	"${target}" &>> /opt/scripts/archlinux.log || fatal "Failed to sync, se /opt/scripts/archlinux.log for more info." 
+	rsync -rtlvH --safe-links --delete-after --progress -h ${QUIET} --timeout=600 --contimeout=60 -p \
+		--delay-updates --no-motd --bwlimit=$bwlimit \
+		--temp-dir="${tmp}" \
+		--exclude='*.links.tar.gz*' \
+		${source} \
+		"${target}" &>> /opt/scripts/archlinux.log || fatal "Failed to sync, se /opt/scripts/archlinux.log for more info." 
+fi
 
 echo "Last sync was $(date -d @$(cat ${target}/lastsync))" >> /opt/scripts/archlinux.log
+
 
