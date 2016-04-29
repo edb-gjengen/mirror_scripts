@@ -24,17 +24,17 @@ if [ ! -d ${BASEDIR} ]; then
   mkdir -p ${BASEDIR} || fatal "Creation of ${BASEDIR} failed."
 fi
 
-rsync -4 --verbose --recursive --times --links --hard-links \
+rsync -4 -q --recursive --times --links --hard-links \
   --stats --chmod=a+rx \
   --exclude "Packages*" --exclude "Sources*" \
   --exclude "Release*" \
   ${RSYNCSOURCE} ${BASEDIR} &>> /opt/scripts/ubuntu_archive_two_stage.log || fatal "First stage of sync failed."
 
-rsync -4 --verbose --recursive --times --links --hard-links \
+rsync -4 -q --recursive --times --links --hard-links \
   --stats --delete --chmod=a+rx --delete-after \
   ${RSYNCSOURCE} ${BASEDIR} &>> /opt/scripts/ubuntu_archive_two_stage.log || fatal "Second stage of sync failed."
 
 date -u > ${BASEDIR}/project/trace/$(hostname -f)
 
 date &>> /opt/scripts/ubuntu_archive_two_stage.log
-echo "############################" &>> /opt/scripts/ubuntu_archive_two_stage.log
+

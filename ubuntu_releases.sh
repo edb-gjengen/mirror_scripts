@@ -24,11 +24,10 @@ if [ ! -d ${BASEDIR} ]; then
   mkdir -p ${BASEDIR} || fatal "Creation of ${BASEDIR} failed."
 fi
 
-rsync --verbose --recursive --times --links --hard-links \
+rsync -q --recursive --times --links --hard-links \
   --stats --delete-after \
   ${RSYNCSOURCE} ${BASEDIR} &>> /opt/scripts/ubuntu_releases.log || fatal "Failed to rsync from ${RSYNCSOURCE}."
 
 date -u > ${BASEDIR}/.trace/$(hostname -f)
 
 date &>> /opt/scripts/ubuntu_releases.log
-echo "############################" &>> /opt/scripts/ubuntu_releases.log
