@@ -22,10 +22,10 @@ flock -n 9 || exit
 
 # only run rsync when there are changes
 if diff -b <(curl -s "$lastupdate_url") "$target/lastupdate" >/dev/null; then
-	echo "Sync was not needed" >> /opt/scripts/archlinux.log
+	echo "rsync was not needed" >> /opt/scripts/archlinux.log
 	date +%s > $target/lastsync
 else
-	echo "Syncing" >> /opt/scripts/archlinux.log
+	echo "running rsync" >> /opt/scripts/archlinux.log
 
 	if ! stty &>/dev/null; then
 		QUIET="-q"
@@ -39,6 +39,6 @@ else
 		"${target}" &>> /opt/scripts/archlinux.log || fatal "Failed to sync, se /opt/scripts/archlinux.log for more info." 
 fi
 
-echo "Last sync was $(date -d @$(cat ${target}/lastsync))" >> /opt/scripts/archlinux.log
+echo "lastsync: $(date -d @$(cat ${target}/lastsync))" >> /opt/scripts/archlinux.log
 
 
