@@ -1,7 +1,11 @@
 #!/bin/bash
 
+logfile='/opt/scripts/archlinux.log'
+
 fatal() {
     echo "$1"
+    echo -e "Last lines from log:\n"
+    tail $logfile
     exit 1
 }
 
@@ -21,11 +25,11 @@ exec 9>"${lock}"
 flock -n 9 || exit
 
 # only run rsync when there are changes
-if diff -b <(curl -s "$lastupdate_url") "$target/lastupdate" >/dev/null; then
-	echo "rsync was not needed" >> /opt/scripts/archlinux.log
-	date +%s > $target/lastsync
-else
-	echo "running rsync" >> /opt/scripts/archlinux.log
+#if diff -b <(curl -s "$lastupdate_url") "$target/lastupdate" >/dev/null; then
+#	echo "rsync was not needed" >> $logfile
+#	date +%s > $target/lastsync
+#else
+	echo "running rsync" >> $logfile
 
 	if ! stty &>/dev/null; then
 		QUIET="-q"
@@ -36,9 +40,9 @@ else
 		--temp-dir="${tmp}" \
 		--exclude='*.links.tar.gz*' \
 		${source} \
-		"${target}" &>> /opt/scripts/archlinux.log || fatal "Failed to sync, se /opt/scripts/archlinux.log for more info." 
-fi
+		"${target}" &>> $logfile || fatal "Failed to sync." 
+#fi
 
-echo "lastsync: $(date -d @$(cat ${target}/lastsync))" >> /opt/scripts/archlinux.log
+echo "lastsync: $(date -d @$(cat ${target}/lastsync))" >> $logfile
 
 
