@@ -25,8 +25,9 @@ exec 9>"${lock}"
 flock -n 9 || exit
 
 # only run rsync when there are changes
-if diff -b <(curl -s "$lastupdate_url") "$target/lastupdate" >/dev/null; then
+if diff -b <(curl -s "$lastupdate_url") "$target/lastupdate" >/dev/null && ! stty &>/dev/null; then
 	echo "rsync was not needed" >> $logfile
+	date +%s > $target/lastsync
 else
 	echo "running rsync" >> $logfile
 
@@ -42,7 +43,6 @@ else
 		"${target}" &>> $logfile || fatal "Failed to sync." 
 fi
 
-date +%s > $target/lastsync
 echo "lastsync: $(date -d @$(cat ${target}/lastsync))" >> $logfile
 
 
