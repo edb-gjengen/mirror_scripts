@@ -39,6 +39,7 @@ else
 		--delay-updates --no-motd --bwlimit=$bwlimit \
 		--temp-dir="${tmp}" \
 		--exclude='*.links.tar.gz*' \
+		--exclude='*.lck' \
 		${source} \
 		"${target}" &>> $logfile || fatal "Failed to sync." 
 fi
