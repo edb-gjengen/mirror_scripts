@@ -40,6 +40,7 @@ else
 		--temp-dir="${tmp}" \
 		--exclude='*.links.tar.gz*' \
 		--exclude='*.lck' \
+		--exclude='*.tmp.*' \
 		${source} \
 		"${target}" &>> $logfile || fatal "Failed to sync." 
 fi
