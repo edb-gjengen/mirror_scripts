@@ -18,8 +18,8 @@ BASEDIR=/store/mirror/archlinux
 
 rsync --verbose --recursive --times --links --hard-links \
   --stats --delete-after --ignore-errors \
-  ${RSYNCSOURCE} ${BASEDIR} &>> /opt/scripts/archlinux.log || fatal "Failed to rsync from ${RSYNCSOURCE}."
+  ${RSYNCSOURCE} ${BASEDIR} &>> /var/log/mirror/archlinux.log || fatal "Failed to rsync from ${RSYNCSOURCE}."
 
 date &>> /opt/scripts/archlinux.log
-echo "############################" &>> /opt/scripts/archlinux.log
+echo "############################" &>> /var/log/mirror/archlinux.log
 

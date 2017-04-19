@@ -1,6 +1,6 @@
 #!/bin/bash
 
-logfile='/opt/scripts/archlinux.log'
+logfile='/var/log/mirror/archlinux.log'
 
 fatal() {
     echo "$1"

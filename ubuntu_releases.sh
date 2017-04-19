@@ -26,8 +26,8 @@ fi
 
 rsync -q --recursive --times --links --hard-links \
   --stats --delete-after \
-  ${RSYNCSOURCE} ${BASEDIR} &>> /opt/scripts/ubuntu_releases.log || fatal "Failed to rsync from ${RSYNCSOURCE}."
+  ${RSYNCSOURCE} ${BASEDIR} &>> /var/log/mirror/ubuntu_releases.log || fatal "Failed to rsync from ${RSYNCSOURCE}."
 
 date -u > ${BASEDIR}/.trace/$(hostname -f)
 
-date &>> /opt/scripts/ubuntu_releases.log
+date &>> /var/log/mirror/ubuntu_releases.log

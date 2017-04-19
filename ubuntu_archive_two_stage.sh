@@ -28,13 +28,13 @@ rsync -4 -q --recursive --times --links --hard-links \
   --stats --chmod=a+rx \
   --exclude "Packages*" --exclude "Sources*" \
   --exclude "Release*" \
-  ${RSYNCSOURCE} ${BASEDIR} &>> /opt/scripts/ubuntu_archive_two_stage.log || fatal "First stage of sync failed."
+  ${RSYNCSOURCE} ${BASEDIR} &>> /var/log/mirror/ubuntu_archive_two_stage.log || fatal "First stage of sync failed."
 
 rsync -4 -q --recursive --times --links --hard-links \
   --stats --delete --chmod=a+rx --delete-after \
-  ${RSYNCSOURCE} ${BASEDIR} &>> /opt/scripts/ubuntu_archive_two_stage.log || fatal "Second stage of sync failed."
+  ${RSYNCSOURCE} ${BASEDIR} &>> /var/log/mirror/ubuntu_archive_two_stage.log || fatal "Second stage of sync failed."
 
 date -u > ${BASEDIR}/project/trace/$(hostname -f)
 
-date &>> /opt/scripts/ubuntu_archive_two_stage.log
+date &>> /var/log/mirror/ubuntu_archive_two_stage.log
 
