@@ -19,8 +19,7 @@ source='rsync://archive.raspbian.org/archive'
 exec 9>"${lock}"
 flock -n 9 || exit
 
-# only run rsync when there are changes
-	rsync -rtlvH --safe-links --delete-after --progress -h --timeout=600 --contimeout=60 -p \
+	rsync -rtlvHq --safe-links --delete-after --progress -h --timeout=600 --contimeout=60 -p \
 		--delay-updates --no-motd \
 		${source} \
 		"${target}" &>> $logfile || fatal "Failed to sync." 

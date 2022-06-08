@@ -9,7 +9,7 @@ fatal() {
     exit 1
 }
 
-home="/store"
+home="/store2"
 target="${home}/mirror/archlinux"
 tmp="${home}/tmp"
 lock='/tmp/mirrorsync.lck'
@@ -45,6 +45,12 @@ else
 		"${target}" &>> $logfile || fatal "Failed to sync." 
 fi
 
-echo "lastsync: $(date -d @$(cat ${target}/lastsync))" >> $logfile
+LAST_SYNC=$(cat ${target}/lastsync)
+if [ -z "${LAST_SYNC}" ];then
+	LAST_SYNC_FORMATTED="UNKNOWN"
+else
+	LAST_SYNC_FORMATTED="$(date -d @${LAST_SYNC})"
+fi
+echo "lastsync: ${LAST_SYNC_FORMATTED}" >> $logfile
 
 
